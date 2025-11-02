@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar"
-import { Product } from "../components/product"
+import { Product } from "../components/Product"
 import { useCartContext } from "../reducerAndcontext/CartContext"
 
 const Cart = () => {
