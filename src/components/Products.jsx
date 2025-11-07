@@ -3,14 +3,33 @@ import { useCartContext } from "../fetured/cart/cartContext"
 export const Products = ({ item, incart }) => {
 
 
-    const { thumbnail, title, price } = item
-    const { dispatch } = useCartContext()
+    const { state, dispatch } = useCartContext()
     const handleCart = (product) => {
         if (incart) {
             dispatch({ type: "REMOVE", payload: product.id })
         } else {
-            dispatch({ type: "ADD", payload: product })
+            dispatch({ type: "ADD", payload: { ...product, stock: 1 } })
         }
+    }
+
+    const handleIncreaseStock = (product) => {
+        if (product.stock < product.quantity) {
+            const updatedProduct = { ...product, stock: product.stock + 1 }
+            return dispatch({ type: "UPDATE", payload: updatedProduct })
+        } else {
+            return product.stock
+        }
+
+    }
+
+    const handleDecreaseStock = (product) => {
+        if (product.stock < product.quantity && product.stock >= 1) {
+            const updatedProduct = { ...product, stock: product.stock - 1 }
+            return dispatch({ type: "UPDATE", payload: updatedProduct })
+        } else {
+            return product.stock
+        }
+
     }
 
 
@@ -23,13 +42,14 @@ export const Products = ({ item, incart }) => {
 
                         const { title, price, thumbnail } = data
                         return (
-                            <div key={index} className="grid grid-cols-3 justify-center  items-center gap-4  border rounded-2xl w-full">
+                            <div key={index} className="grid grid-cols-3 w-[50vw] justify-center  items-center gap-4  border rounded-2xl">
                                 <div className="h-[200px] w-[200px] object-fill flex justify-center items-center ">
                                     <img src={thumbnail} alt="" className="" />
                                 </div>
                                 <div className="flex flex-col items-start">
                                     <div><span className="font-bold">Title</span>:{title} </div>
                                     <div><span className="font-bold">Price</span>:${price} </div>
+                                    <div className="font-bold"><button className="p-1 w-8 bg-red-500 rounded-full mr-2" onClick={() => handleDecreaseStock(data)}>-</button><span >{data.stock}</span><button onClick={() => handleIncreaseStock(data)} className="ml-2 p-1 w-8 bg-red-500 rounded-full">+</button></div>
                                 </div>
                                 <div className="text-center">
                                     <button className={` border rounded-md px-2 py-1   ${incart ? "bg-red-500" : "bg-blue-500"}`} onClick={() => handleCart(data)}>{incart ? "Remove to cart" : "Add to cart"}</button>

@@ -6,8 +6,8 @@ export const Home = () => {
     const [data, setData] = useState([])
     const [originalData, setOriginalData] = useState([])
 
-    let  dummydata =localStorage.getItem("dummyData")
-    let  orginalData =localStorage.getItem("originalData")
+    let dummydata = localStorage.getItem("dummyData")
+    let orginalData = localStorage.getItem("originalData")
 
     useEffect(() => {
         if (dummydata) {
@@ -20,7 +20,7 @@ export const Home = () => {
                 const alldata = data.carts?.flatMap((data) => data.products)
                 setData(alldata)
                 setOriginalData(alldata)
-                localStorage.setItem("dummyData",JSON.stringify(alldata))
+                localStorage.setItem("dummyData", JSON.stringify(alldata))
             })
         }
 
